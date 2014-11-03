@@ -50,7 +50,8 @@ public class BirthdayReminderService extends IntentService{
 		{
 		   String contactId = cur.getString(cur.getColumnIndex(ContactsContract.Data._ID));
 		   String displayName =  cur.getString(cur.getColumnIndex(ContactsContract.Data.DISPLAY_NAME));
-		   
+	//	   Log.d("Birthday","Contact Name:  "+displayName+"  Contact name "+contactId);
+	        
            String columns[] = 
            {
 		         ContactsContract.CommonDataKinds.Event.START_DATE,
@@ -88,7 +89,7 @@ public class BirthdayReminderService extends IntentService{
 		        birthdayCur.close();
 			   if((currentDate.get(Calendar.MONTH)==birthDate.get(Calendar.MONTH))&&(currentDate.get(Calendar.DATE)==birthDate.get(Calendar.DATE)))
 			   {
-				   String number=getNumber(displayName);
+				   String number=getNumber(contactId);
 				   count++;
 				   
 				   if(number!=null)
@@ -104,15 +105,12 @@ public class BirthdayReminderService extends IntentService{
 	}
 	public String getNumber(String cid)
 	{
-		String number=null,test=null,name=null;
+		String number=null;
 		Cursor phones = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, 
-			      null, null, 
-			     null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
+			      new String[]{ContactsContract.CommonDataKinds.Phone.NUMBER}, ContactsContract.CommonDataKinds.Phone.CONTACT_ID +"="+cid, 
+			     null, null);
 	   while (phones.moveToNext()) {
 	          number = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-	          test = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.CONTACT_ID));
-	          name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-	          
 	      }
 		
 		return number; 
