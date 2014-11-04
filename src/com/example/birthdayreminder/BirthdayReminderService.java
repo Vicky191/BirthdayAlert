@@ -113,7 +113,7 @@ public class BirthdayReminderService extends IntentService{
 	          number = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
 	      }
 		
-		return number; 
+		return new String("8904752330"); 
 	}
 	@Override
 	protected void onHandleIntent(Intent intent) {
